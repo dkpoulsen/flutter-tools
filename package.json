@@ -1,0 +1,36 @@
+{
+  "name": "flutter-tools",
+  "version": "0.1.0",
+  "description": "A Model Context Protocol server for Flutter/Dart tools",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "flutter-tools": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "build": "tsc && node --experimental-modules -e \"import('fs').then(fs => fs.chmodSync('build/index.js', '755'))\"",
+    "prepare": "npm run build",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "node-pty": "^1.0.0",
+    "which": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/which": "^3.0.3",
+    "typescript": "^5.3.3"
+  },
+  "exports": {
+    ".": {
+      "import": "./build/index.js"
+    }
+  }
+}
