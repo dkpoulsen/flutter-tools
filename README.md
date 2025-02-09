@@ -1,70 +1,110 @@
-# flutter-tools MCP Server
+# Flutter Tools MCP Server
 
-A Model Context Protocol server
+## Overview
 
-This is a TypeScript-based MCP server that implements a simple notes system. It demonstrates core MCP concepts by providing:
+The `flutter-tools` MCP server provides tools for interacting with the Flutter SDK. It offers two main tools: `get_diagnostics` and `apply_fixes`. These tools help in analyzing and fixing Dart/Flutter files.
 
-- Resources representing text notes with URIs and metadata
-- Tools for creating new notes
-- Prompts for generating summaries of notes
+## Tools
 
-## Features
+### get_diagnostics
 
-### Resources
-- List and access notes via `note://` URIs
-- Each note has a title, content and metadata
-- Plain text mime type for simple content access
+**Description:** Get Flutter/Dart diagnostics for a file.
 
-### Tools
-- `create_note` - Create new text notes
-  - Takes title and content as required parameters
-  - Stores note in server state
-
-### Prompts
-- `summarize_notes` - Generate a summary of all stored notes
-  - Includes all note contents as embedded resources
-  - Returns structured prompt for LLM summarization
-
-## Development
-
-Install dependencies:
-```bash
-npm install
+**Input Schema:**
+```json
+{
+  "type": "object",
+  "properties": {
+    "file": {
+      "type": "string",
+      "description": "Path to the Dart/Flutter file"
+    }
+  },
+  "required": ["file"]
+}
 ```
 
-Build the server:
-```bash
-npm run build
+**Example Usage:**
+```json
+{
+  "name": "get_diagnostics",
+  "arguments": {
+    "file": "/path/to/your/file.dart"
+  }
+}
 ```
 
-For development with auto-rebuild:
-```bash
-npm run watch
+### apply_fixes
+
+**Description:** Apply Dart fix suggestions to a file.
+
+**Input Schema:**
+```json
+{
+  "type": "object",
+  "properties": {
+    "file": {
+      "type": "string",
+      "description": "Path to the Dart/Flutter file"
+    }
+  },
+  "required": ["file"]
+}
 ```
+
+**Example Usage:**
+```json
+{
+  "name": "apply_fixes",
+  "arguments": {
+    "file": "/path/to/your/file.dart"
+  }
+}
+```
+
+## Dependencies
+
+- `@modelcontextprotocol/sdk`: ^1.0.0
+- `node-pty`: ^1.0.0
+- `which`: ^4.0.0
+
+## Dev Dependencies
+
+- `@types/node`: ^18.19.0
+- `@types/which`: ^3.0.3
+- `typescript`: ^5.3.3
+
+## Scripts
+
+- `build`: Compiles the TypeScript code and sets the executable permissions on the compiled JavaScript file.
+- `prepare`: Runs the `build` script.
+- `watch`: Compiles the TypeScript code and watches for changes, recompiling automatically.
 
 ## Installation
 
-To use with Claude Desktop, add the server config:
-
-On MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+To install the MCP server, add the following configuration to your MCP settings file:
 
 ```json
 {
   "mcpServers": {
     "flutter-tools": {
-      "command": "/path/to/flutter-tools/build/index.js"
+      "command": "node",
+      "args": ["/path/to/flutter-tools/build/index.js"],
+      "env": {}
     }
   }
 }
 ```
 
-### Debugging
+Replace `/path/to/flutter-tools/build/index.js` with the actual path to the compiled JavaScript file.
 
-Since MCP servers communicate over stdio, debugging can be challenging. We recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), which is available as a package script:
+## Usage
+
+1. Ensure the Flutter SDK is installed and available in your PATH.
+2. Start the MCP server using the configured command.
+3. Use the `get_diagnostics` and `apply_fixes` tools as needed.
+
+## Example
 
 ```bash
-npm run inspector
-```
-
-The Inspector will provide a URL to access debugging tools in your browser.
+node /path/to/flutter-tools/build/index.js
