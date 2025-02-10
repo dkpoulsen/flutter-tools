@@ -4,6 +4,8 @@
 
 The `flutter-tools` MCP server provides tools for interacting with the Flutter SDK. It offers two main tools: `get_diagnostics` and `apply_fixes`. These tools help in analyzing and fixing Dart/Flutter files.
 
+<a href="https://glama.ai/mcp/servers/4v3bx1viov"><img width="380" height="200" src="https://glama.ai/mcp/servers/4v3bx1viov/badge" alt="Flutter Tools Server MCP server" /></a>
+
 ## Tools
 
 ### get_diagnostics
